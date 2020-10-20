@@ -22,7 +22,8 @@ namespace LibraryFrontEnd.Controllers
         // GET: LibraryItems
         public async Task<IActionResult> Index()
         {
-            return View(await _context.LibraryItem.ToListAsync());
+            var result = await _context.LibraryItem.Select(x => x).OrderBy(x => x.Category.CategoryName).ToListAsync();
+            return View(result);
         }
 
         // GET: LibraryItems/Details/5
