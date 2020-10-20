@@ -32,3 +32,17 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@using (Html.BeginForm())
+{
+    if (!string.IsNullOrEmpty(ViewBag.ErrorMessageEdit))
+    {
+        <div>
+            <p>
+
+                <span style="color:red;">@ViewBag.ErrorMessageEdit</span>
+
+            </p>
+        </div>
+    }
+    <div class="form-horizontal" />
+}

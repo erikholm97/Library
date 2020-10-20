@@ -22,3 +22,15 @@ C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.
 C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.dll
 C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.pdb
 C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.genruntimeconfig.cache
+D:\Coding challenge\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.dll
+D:\Coding challenge\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.deps.json
+D:\Coding challenge\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.runtimeconfig.json
+D:\Coding challenge\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.runtimeconfig.dev.json
+D:\Coding challenge\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.pdb
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.csprojAssemblyReference.cache
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.AssemblyInfoInputs.cache
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.AssemblyInfo.cs
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.csproj.CoreCompileInputs.cache
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.dll
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.pdb
+D:\Coding challenge\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.genruntimeconfig.cache

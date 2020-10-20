@@ -6,6 +6,7 @@ namespace Library
     {
         public int Id { get; set; }
 
+        public int CategoryId { get; set; }
         public Category Category { get; set; }
 
         public string Title { get; set; }
@@ -22,7 +23,7 @@ namespace Library
 
         public DateTime BorrowDate { get; set; }
 
-        public int Type { get; set; }
+        public string Type { get; set; }
 
 
     }

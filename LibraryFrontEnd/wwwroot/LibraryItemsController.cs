@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
 
-namespace LibraryFrontEnd.Controllers
+namespace LibraryFrontEnd.wwwroot
 {
     public class LibraryItemsController : Controller
     {
