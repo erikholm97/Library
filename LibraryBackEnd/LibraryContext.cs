@@ -17,7 +17,14 @@ namespace LibraryBackEnd
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Server=(localdb)\mssqllocaldb;Database=Blogging;Integrated Security=True");
+                @"Server=(localdb)\mssqllocaldb;Database=Library;Integrated Security=True");
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Category>(entity => {
+                entity.HasIndex(e => e.CategoryName).IsUnique();
+            });
         }
     }
 }
