@@ -10,3 +10,15 @@ C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\Libra
 C:\Users\erikh\source\repos\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.pdb
 C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.dll
 C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.pdb
+C:\www\New folder\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.deps.json
+C:\www\New folder\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.runtimeconfig.json
+C:\www\New folder\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.runtimeconfig.dev.json
+C:\www\New folder\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.dll
+C:\www\New folder\Library\LibraryBackEnd\bin\Debug\netcoreapp3.1\LibraryBackEnd.pdb
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.csprojAssemblyReference.cache
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.AssemblyInfoInputs.cache
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.AssemblyInfo.cs
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.csproj.CoreCompileInputs.cache
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.dll
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.pdb
+C:\www\New folder\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.genruntimeconfig.cache
