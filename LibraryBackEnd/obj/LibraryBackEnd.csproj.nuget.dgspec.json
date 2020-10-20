@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\erikh\\source\\repos\\LibraryBackEnd\\LibraryBackEnd\\LibraryBackEnd.csproj": {}
+    "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj": {}
   },
   "projects": {
-    "C:\\Users\\erikh\\source\\repos\\LibraryBackEnd\\LibraryBackEnd\\LibraryBackEnd.csproj": {
+    "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\erikh\\source\\repos\\LibraryBackEnd\\LibraryBackEnd\\LibraryBackEnd.csproj",
+        "projectUniqueName": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
         "projectName": "LibraryBackEnd",
-        "projectPath": "C:\\Users\\erikh\\source\\repos\\LibraryBackEnd\\LibraryBackEnd\\LibraryBackEnd.csproj",
+        "projectPath": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
         "packagesPath": "C:\\Users\\erikh\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\erikh\\source\\repos\\LibraryBackEnd\\LibraryBackEnd\\obj\\",
+        "outputPath": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -42,6 +42,22 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.9, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
