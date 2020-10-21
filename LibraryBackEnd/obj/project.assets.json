@@ -5631,25 +5631,27 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\erikh\\.nuget\\packages\\": {},
+    "C:\\Users\\erik\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
+      "projectUniqueName": "C:\\www\\New folder\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
       "projectName": "LibraryBackEnd",
-      "projectPath": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
-      "packagesPath": "C:\\Users\\erikh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\obj\\",
+      "projectPath": "C:\\www\\New folder\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
+      "packagesPath": "C:\\Users\\erik\\.nuget\\packages\\",
+      "outputPath": "C:\\www\\New folder\\Library\\LibraryBackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\erikh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\erik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 18.2.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
@@ -5657,8 +5659,11 @@
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\DevExpress 18.2\\Components\\System\\Components\\Packages": {},
+        "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
@@ -5704,7 +5709,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
       }
     }
   }
