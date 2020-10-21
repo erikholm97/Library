@@ -12,7 +12,10 @@
 <table class="table">
     <thead>
     <th>
-        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Sort by @Html.DisplayNameFor(model => model.Type)</a>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">Sort by @Html.DisplayNameFor(model => model.Type)</a>
+    </th>
+    <th>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["CategorySortParm"]">Sort by Category</a>
     </th>
     <tr>
         <th>
@@ -20,6 +23,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
+            
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Author)
@@ -50,10 +54,11 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.Id)
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
+                    (<b>@(string.Concat(item.Title.Split(' ').Select(w => w.First())).ToUpper())</b>)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Author)

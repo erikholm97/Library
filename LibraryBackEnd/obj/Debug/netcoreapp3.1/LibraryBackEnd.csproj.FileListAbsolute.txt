@@ -33,4 +33,3 @@ C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\Libra
 C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.dll
 C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.pdb
 C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.genruntimeconfig.cache
-C:\Users\erikh\source\repos\Library\LibraryBackEnd\obj\Debug\netcoreapp3.1\LibraryBackEnd.csprojAssemblyReference.cache

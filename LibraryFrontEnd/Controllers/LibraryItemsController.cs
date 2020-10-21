@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
+using LibraryFrontEnd.Models;
 
 namespace LibraryFrontEnd.Controllers
 {
@@ -22,26 +23,30 @@ namespace LibraryFrontEnd.Controllers
         // GET: LibraryItems
         public async Task<IActionResult> Index(string sortOrder)
         {
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["TypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "orderByType" : "";
+            ViewData["CategorySortParam"] = String.IsNullOrEmpty(sortOrder) ? "orderByCategory" : "";
+
             try
             {
-                var types = from t in await _context.LibraryItem.Include(l => l.Category).ToListAsync()
-                    select t;
+                var items = from i in _context.LibraryItem.ToList() join c in _context.Category.ToList() on i.CategoryId equals c.Id
+                    select i;
 
                 switch (sortOrder)
                 {
-                    case "name_desc":
-                        return View(types.OrderBy(s => s.Type).ToList());
-                        break;
+                    case "orderByType":
+                        return View(items.OrderBy(s => s.Type).ToList());
+                        
+                    case "orderByCategory":
+                    default:
+                        items = _context.LibraryItem.OrderBy(x => x.Category.CategoryName);
+                        return View(items);
+
                 }
             }
             catch (Exception ex)
             {
-
+                throw new Exception("Could not update");
             }
-
-            var libraryContext = _context.LibraryItem.Include(l => l.Category);
-            return View(await libraryContext.ToListAsync());
         }
 
         // GET: LibraryItems/Details/5
@@ -100,7 +105,13 @@ namespace LibraryFrontEnd.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
-            return View(libraryItem);
+
+            var items = from i in _context.LibraryItem.ToList()
+                        join c in _context.Category.ToList() on i.CategoryId equals c.Id
+                        select i;
+
+
+            return View(items);
         }
 
         // GET: LibraryItems/Edit/5
