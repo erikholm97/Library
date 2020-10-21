@@ -20,8 +20,21 @@ namespace LibraryFrontEnd.Controllers
         }
 
         // GET: LibraryItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            
+            var types = from t in await _context.LibraryItem.ToListAsync()
+                           select t;
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    types = types.OrderBy(s => s.Type);
+                    break;
+                default:
+                    types = types.OrderBy(s => s.Category);
+                    break;
+            }
             var libraryContext = _context.LibraryItem.Include(l => l.Category);
             return View(await libraryContext.ToListAsync());
         }
@@ -61,6 +74,22 @@ namespace LibraryFrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
+                switch (libraryItem.Type)
+                {
+                    case "0":
+                        libraryItem.Type = "Book";
+                        break;
+                    case "1":
+                        libraryItem.Type = "ReferenceBook";
+                        break;
+                    case "2":
+                        libraryItem.Type = "DVD";
+                        break;
+                    case "3":
+                        libraryItem.Type = "AudioBook";
+                        break;
+                }
+
                 _context.Add(libraryItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -44,7 +44,7 @@ namespace LibraryBackEnd.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryId = table.Column<int>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Author = table.Column<string>(nullable: true),
                     Pages = table.Column<int>(nullable: false),
@@ -52,7 +52,7 @@ namespace LibraryBackEnd.Migrations
                     IsBorrowable = table.Column<bool>(nullable: false),
                     Borrower = table.Column<string>(nullable: true),
                     BorrowDate = table.Column<DateTime>(nullable: false),
-                    Type = table.Column<int>(nullable: false)
+                    Type = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,8 +62,15 @@ namespace LibraryBackEnd.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Category",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Category_CategoryName",
+                table: "Category",
+                column: "CategoryName",
+                unique: true,
+                filter: "[CategoryName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LibraryItem_CategoryId",

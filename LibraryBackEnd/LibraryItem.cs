@@ -24,7 +24,5 @@ namespace Library
         public DateTime BorrowDate { get; set; }
 
         public string Type { get; set; }
-
-
     }
 }

@@ -5632,19 +5632,21 @@
   },
   "packageFolders": {
     "C:\\Users\\erikh\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Coding challenge\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
+      "projectUniqueName": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
       "projectName": "LibraryBackEnd",
-      "projectPath": "D:\\Coding challenge\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
+      "projectPath": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\LibraryBackEnd.csproj",
       "packagesPath": "C:\\Users\\erikh\\.nuget\\packages\\",
-      "outputPath": "D:\\Coding challenge\\Library\\LibraryBackEnd\\obj\\",
+      "outputPath": "C:\\Users\\erikh\\source\\repos\\Library\\LibraryBackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Microsoft\\Xamarin\\NuGet\\",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
         "C:\\Users\\erikh\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5702,7 +5704,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
