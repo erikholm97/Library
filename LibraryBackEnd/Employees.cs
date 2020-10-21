@@ -18,6 +18,6 @@ namespace Library
 
         public bool IsManager { get; set; }
 
-        public int ManagerId { get; set; }
+        public int? ManagerId { get; set; }
     }
 }

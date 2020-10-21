@@ -88,9 +88,11 @@ namespace LibraryFrontEnd.Controllers
                 {
                     case "0":
                         libraryItem.Type = "Book";
+
                         break;
                     case "1":
                         libraryItem.Type = "ReferenceBook";
+                        libraryItem.IsBorrowable = false;
                         break;
                     case "2":
                         libraryItem.Type = "DVD";
@@ -112,6 +114,12 @@ namespace LibraryFrontEnd.Controllers
 
 
             return View(items);
+        }
+        public void AddLibraryItem(int id)
+        {
+            var items = from i in _context.LibraryItem.ToList()
+                        where i.Id == id
+                        select i;
         }
 
         // GET: LibraryItems/Edit/5

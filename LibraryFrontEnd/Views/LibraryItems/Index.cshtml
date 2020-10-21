@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Library.LibraryItem>
 
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -23,7 +24,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
-            
+
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Author)
@@ -46,47 +47,59 @@
         <th>
             @Html.DisplayNameFor(model => model.Type)
         </th>
+        <th>
+            Check Out
+        </th>
         <th></th>
     </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                    (<b>@(string.Concat(item.Title.Split(' ').Select(w => w.First())).ToUpper())</b>)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Pages)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RunTimeMinutes)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsBorrowable)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Borrower)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BorrowDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Type)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+                (<b>@(string.Concat(item.Title.Split(' ').Select(w => w.First())).ToUpper())</b>)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pages)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RunTimeMinutes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsBorrowable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Borrower)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BorrowDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @{
+                    if (item.Type != "ReferenceBook")
+                    {
+                        <input type="checkbox" class="done-checkbox">
+                    }
+                }
+
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
