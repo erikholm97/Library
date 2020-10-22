@@ -338,3 +338,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+.vs/Library/v16/.suo
+LibraryBackEnd/obj/Debug/netcoreapp3.1/LibraryBackEnd.csproj.FileListAbsolute.txt
+LibraryBackEnd/obj/Debug/netcoreapp3.1/LibraryBackEnd.csprojAssemblyReference.cache
+LibraryBackEnd/obj/Debug/netcoreapp3.1/LibraryBackEnd.csprojAssemblyReference.cache
+LibraryBackEnd/obj/Debug/netcoreapp3.1/LibraryBackEnd.csproj.FileListAbsolute.txt
+.vs/Library/v16/.suo
+*.txt
