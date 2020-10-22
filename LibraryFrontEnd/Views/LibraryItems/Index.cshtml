@@ -87,7 +87,7 @@
             </td>
             <td>
                 @{
-                    if (item.Type != "ReferenceBook")
+                    if (item.Type != "ReferenceBook" && item.IsBorrowable == true)
                     {
                         <input type="checkbox" class="done-checkbox">
                     }
