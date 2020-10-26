@@ -68,26 +68,55 @@ namespace LibraryFrontEnd.Controllers
             return View(libraryItem);
         }
 
-        public IActionResult CheckOut(int? id)
+        public async Task<IActionResult> CheckOut(int? id)
         {
-            var ids = id;
-            return View();
-        }
-        //public async Task<IActionResult> CheckOut(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var libraryItem = await _context.LibraryItem.FindAsync(id);
-        //    if (libraryItem == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
-        //    return View(libraryItem);
-        //}
+            var libraryItem = await _context.LibraryItem.FindAsync(id);
+            if (libraryItem == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+
+            return View(libraryItem);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckOut(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
+        {
+            if (id != libraryItem.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(libraryItem);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LibraryItemExists(libraryItem.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+            return View(libraryItem);
+        }
+       
         // GET: LibraryItems/Create
         public IActionResult Create()
         {
@@ -134,20 +163,7 @@ namespace LibraryFrontEnd.Controllers
 
             return View(items);
         }
-        public void AddLibraryItem(int id)
-        {
-            var items = from i in _context.LibraryItem.ToList()
-                        where i.Id == id
-                        select i;
-
-
-
-            //When editing a library item, if the item is borrowable(IsBorrowable = true), the
-            //    application user can check out the item for a customer. When lending an item to a
-            //    customer the user enters the customer’s name which will set the Borrower field in the
-            //    database, along with the current date which will be set in the BorrowDate field.
-        }
-
+       
         // GET: LibraryItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

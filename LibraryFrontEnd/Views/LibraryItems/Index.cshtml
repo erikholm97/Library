@@ -102,7 +102,6 @@
                 @{
                     if (item.Type != "ReferenceBook" && item.IsBorrowable == true)
                     {
-                        <input type="checkbox" class="done-checkbox">
                         <a asp-action="CheckOut" asp-route-id="@item.Id">CheckOut</a>
                     }
 

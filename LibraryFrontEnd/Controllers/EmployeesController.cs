@@ -58,6 +58,22 @@ namespace LibraryFrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
+                decimal salaryCeo = 2.725M;
+                decimal salaryManager = 1.725M;
+                decimal employeeSalary = 1.125M;
+
+                var ceo = _context.Employees.Count(x => x.IsCEO == true);
+
+                if (ceo == 0)
+                {
+                    employees.Salary = employees.Salary * salaryCeo; // calculate ceo salary
+
+                    _context.Employees.Add(employees);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+
+                }
+
                 _context.Add(employees);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
