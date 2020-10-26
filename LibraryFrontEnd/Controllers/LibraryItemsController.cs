@@ -68,6 +68,26 @@ namespace LibraryFrontEnd.Controllers
             return View(libraryItem);
         }
 
+        public IActionResult CheckOut(int? id)
+        {
+            var ids = id;
+            return View();
+        }
+        //public async Task<IActionResult> CheckOut(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var libraryItem = await _context.LibraryItem.FindAsync(id);
+        //    if (libraryItem == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+        //    return View(libraryItem);
+        //}
         // GET: LibraryItems/Create
         public IActionResult Create()
         {
@@ -112,7 +132,6 @@ namespace LibraryFrontEnd.Controllers
                         join c in _context.Category.ToList() on i.CategoryId equals c.Id
                         select i;
 
-
             return View(items);
         }
         public void AddLibraryItem(int id)
@@ -120,6 +139,13 @@ namespace LibraryFrontEnd.Controllers
             var items = from i in _context.LibraryItem.ToList()
                         where i.Id == id
                         select i;
+
+
+
+            //When editing a library item, if the item is borrowable(IsBorrowable = true), the
+            //    application user can check out the item for a customer. When lending an item to a
+            //    customer the user enters the customer’s name which will set the Borrower field in the
+            //    database, along with the current date which will be set in the BorrowDate field.
         }
 
         // GET: LibraryItems/Edit/5
@@ -208,9 +234,9 @@ namespace LibraryFrontEnd.Controllers
 
             return View(libraryItem);
         }
-
+        
         // POST: LibraryItems/Delete/5
-        [HttpPost, ActionName("Delete")]
+       [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
