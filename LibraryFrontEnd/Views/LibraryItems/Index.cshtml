@@ -62,7 +62,20 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
-                (<b>@(string.Concat(item.Title.Split(' ').Select(w => w.First())).ToUpper())</b>)
+                <br />
+                Acronym:
+                @{
+                    try
+                    {
+                        <b>(@(string.Concat(item.Title.Split(' ').Select(w => w.First())).ToUpper()))</b>
+                    }
+                    catch
+                    {
+                        <b>(@(item.Title[0]))</b>
+                    }
+
+                }
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Author)
