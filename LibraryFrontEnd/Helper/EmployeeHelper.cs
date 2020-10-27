@@ -14,6 +14,11 @@ namespace LibraryFrontEnd.Helper
         public decimal salaryManager = 1.725M;
         public decimal salaryEmployee = 1.125M;
 
+        /// <summary>
+        /// Functions that calculate salary before creating the employee.
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public decimal CalculateCeoSalary(decimal number)
         {
             number = number * salaryCeo;
