@@ -11,62 +11,68 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Salary)
-            </th>
-            <th>
-                <b>Role</b>
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsManager)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ManagerId)
-            </th>
-            <th></th>
-        </tr>
+    <th>
+        <a asp-action="Index">Reset</a>
+        <br/>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">Sort by Employee</a>
+    </th>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Salary)
+        </th>
+        <th>
+            <b>Role</b>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsManager)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ManagerId)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Salary)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCEO)
-            @{if(item.IsCEO == true)
-              {<b>CEO</b>}
-              else if (item.IsManager == true)
-              {<b>Manager</b>}
-              else
-              {<b>Employee</b>}
-            }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsManager)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ManagerId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCEO)
+                    @{if (item.IsCEO == true)
+                        {<b>CEO</b>}
+                        else if (item.IsManager == true)
+                        {<b>Manager</b>}
+                        else
+                        {<b>Employee</b>}
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsManager)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManagerId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

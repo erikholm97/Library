@@ -22,18 +22,33 @@ namespace LibraryFrontEnd.Controllers
         }
 
         // GET: Employees
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+            ViewData["TypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "orderByEmployee" : "orderByManager";
+
             var getCeo = from ceo in _context.Employees where ceo.IsCEO == true select ceo;
 
             var getManager = from manager in _context.Employees where manager.IsManager == true && manager.IsCEO == false select manager;
 
             var getEmployee = from employee in _context.Employees where employee.IsCEO == false && employee.IsManager == false select employee;
 
-            IEnumerable<Employees> groupedList = getCeo.Concat(getManager).Concat(getEmployee);
 
-            var list = groupedList.ToList();
-            return View(groupedList.ToList());
+            var employees = new List<Employees>();
+
+            switch (sortOrder)
+            {
+                case "orderByEmployee":
+                    employees = getEmployee.Concat(getCeo).Concat(getManager).ToList();
+                    break;
+                case "orderByManager":
+                    employees = getEmployee.Concat(getCeo).Concat(getManager).ToList();
+                    break;
+                default:
+                    employees = getCeo.Concat(getManager).Concat(getEmployee).ToList();
+                    break;
+            }
+
+            return View(employees);
         }
         
         // GET: Employees/Details/5
@@ -96,6 +111,7 @@ namespace LibraryFrontEnd.Controllers
 
                     return View(employees);
                 }
+
                 //Ceo does not exists in system and User wants to create a new CEO. 
                 else if (!ceoExist && employees.IsCEO == true)
                 {
@@ -105,7 +121,6 @@ namespace LibraryFrontEnd.Controllers
                     employees.Salary = helper.CalculateCeoSalary(employees.Salary);
                 }
 
-                
                 if (employees.IsManager == true && employees.IsCEO == false)
                 {
                     employees.Salary = helper.CalculateManagerSalary(employees.Salary);
