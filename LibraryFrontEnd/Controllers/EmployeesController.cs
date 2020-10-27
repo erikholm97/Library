@@ -7,15 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
+using LibraryFrontEnd.Helper;
 
 namespace LibraryFrontEnd.Controllers
 {
     public class EmployeesController : Controller
     {
-        private decimal salaryCeo = 2.725M;
-        private decimal salaryManager = 1.725M;
-        private decimal employeeSalary = 1.125M;
-
+        
         private readonly LibraryContext _context;
 
         public EmployeesController(LibraryContext context)
@@ -28,11 +26,13 @@ namespace LibraryFrontEnd.Controllers
         {
             var getCeo = from ceo in _context.Employees where ceo.IsCEO == true select ceo;
 
-            var getEmployee = from employee in _context.Employees where employee.IsCEO == false && employee.IsManager == false select employee;
-
             var getManager = from manager in _context.Employees where manager.IsManager == true && manager.IsCEO == false select manager;
 
-            IEnumerable<Employees> groupedList = getCeo.Concat(getCeo).Concat(getManager).Concat(getEmployee);
+            var getEmployee = from employee in _context.Employees where employee.IsCEO == false && employee.IsManager == false select employee;
+
+            IEnumerable<Employees> groupedList = getCeo.Concat(getManager).Concat(getEmployee);
+
+            var list = groupedList.ToList();
             return View(groupedList.ToList());
         }
 
@@ -69,6 +69,7 @@ namespace LibraryFrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
+                EmployeeHelper helper = new EmployeeHelper();
 
                 if (employees.Salary < 1 || employees.Salary > 10)
                 {
@@ -77,24 +78,13 @@ namespace LibraryFrontEnd.Controllers
 
                 var ceo = _context.Employees.Count(x => x.IsCEO == true);
 
-                //Todo Kolla om Man
-
-                /*
-                 Create, update and delete employees
-    
-                • You should not be able to delete a manger or CEO that is managing another
-                employee
-                • CEO can manage managers but not employees
-                • Managers can manage other managers and employees
-                • No one can manage the CEO
-            
-                 */
-
+                
                 if (ceo == 0)
                 {
-                    employees.Salary = employees.Salary * salaryCeo; // calculate ceo salary
+                    employees.Salary = helper.CalculateCeoSalary(employees.Salary);
 
-                } else if(ceo > 0 && employees.IsCEO == true)
+                } 
+                else if(ceo > 0 && employees.IsCEO == true)
                 {
                     ViewBag.Error = "There is already an CEO in the library system.";
                     
@@ -102,14 +92,13 @@ namespace LibraryFrontEnd.Controllers
                 }
                 else if (employees.IsManager == true && employees.IsCEO == false)
                 {
-                    employees.Salary = employees.Salary * salaryManager;
+                    employees.Salary = helper.CalculateManagerSalary(employees.Salary);
                 }
                 else
                 {
-                    employees.Salary = employees.Salary * employeeSalary;
+                    employees.Salary = helper.CalculateEmployeeSalary(employees.Salary);
                 }
                 
-
                 _context.Add(employees);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
