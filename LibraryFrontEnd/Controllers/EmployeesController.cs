@@ -12,6 +12,10 @@ namespace LibraryFrontEnd.Controllers
 {
     public class EmployeesController : Controller
     {
+        private decimal salaryCeo = 2.725M;
+        private decimal salaryManager = 1.725M;
+        private decimal employeeSalary = 1.125M;
+
         private readonly LibraryContext _context;
 
         public EmployeesController(LibraryContext context)
@@ -58,11 +62,25 @@ namespace LibraryFrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
-                decimal salaryCeo = 2.725M;
-                decimal salaryManager = 1.725M;
-                decimal employeeSalary = 1.125M;
-
+               
                 var ceo = _context.Employees.Count(x => x.IsCEO == true);
+
+                //Todo Kolla om Man
+
+                /*
+                 Create, update and delete employees
+                • Say the employee should be a manager or even a CEO
+                • Only one CEO can be created at a time in the application database
+                • The salary should be calculated when creating the employee using the logic
+                described in the task
+                • You should not be able to delete a manger or CEO that is managing another
+                employee
+                • CEO can manage managers but not employees
+                • Managers can manage other managers and employees
+                • No one can manage the CEO
+                • Validation on input fields
+                 
+                 */
 
                 if (ceo == 0)
                 {
@@ -72,6 +90,11 @@ namespace LibraryFrontEnd.Controllers
                     _context.SaveChanges();
                     return RedirectToAction("Index");
 
+                } else if(ceo > 0)
+                {
+                    ViewBag.Error = "There is already an CEO in the library system.";
+                    
+                    return RedirectToAction("InformationEmployees");
                 }
 
                 _context.Add(employees);
@@ -79,6 +102,13 @@ namespace LibraryFrontEnd.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(employees);
+        }
+
+        public IActionResult InformationEmployees()
+        {
+            ViewData["Message"] = "There is already an CEO.";
+
+            return View();
         }
 
         // GET: Employees/Edit/5
