@@ -71,26 +71,40 @@ namespace LibraryFrontEnd.Controllers
             {
                 EmployeeHelper helper = new EmployeeHelper();
 
+                //If user user has set IsManager to true and IsCEO to true.
+                if (employees.IsManager == true && employees.IsCEO == true)
+                {
+                    ViewBag.ErrorMessage = "You can't create a CEO and Manager at the same time.";
+
+                    return View(employees);
+                }
+
+                //If user has made an input less than 1 or higher than 10. 
                 if (employees.Salary < 1 || employees.Salary > 10)
                 {
-                    return RedirectToAction("InformationInput");
+                    ViewBag.ErrorMessage = "Input an value between 1-10 for salary.";
+
+                    return View(employees);
                 }
 
                 bool ceoExist = await CheckIfCeoExist() ? true : false;
 
+                //Ceo exists in system and User wants to create a new CEO. 
                 if (ceoExist && employees.IsCEO == true)
                 {
                     ViewBag.ErrorMessage = "There is already an CEO in the library system.";
 
                     return View(employees);
                 }
-                else
+                //Ceo does not exists in system and User wants to create a new CEO. 
+                else if (!ceoExist && employees.IsCEO == true)
                 {
-                    employees.ManagerId = null;
-                    employees.IsManager = false;
-
+                    //Method that removes fields from employees that is not necessary for CEO.
+                    employees = helper.RemoveManagerFields(employees);
+                    
                     employees.Salary = helper.CalculateCeoSalary(employees.Salary);
                 }
+
                 
                 if (employees.IsManager == true && employees.IsCEO == false)
                 {
@@ -116,6 +130,9 @@ namespace LibraryFrontEnd.Controllers
 
             return View(employees);
         }
+
+        
+
         private async Task<bool> CheckIfCeoExist()
         {
             var ceo = _context.Employees.Count(x => x.IsCEO == true);
