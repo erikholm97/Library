@@ -119,7 +119,7 @@ namespace LibraryFrontEnd.Controllers
                 {
                     libraryItem.IsBorrowable = false;
                     libraryItem.BorrowDate = null;
-
+                    libraryItem.Borrower = null;
                     _context.Update(libraryItem);
                     await _context.SaveChangesAsync();
                 }
