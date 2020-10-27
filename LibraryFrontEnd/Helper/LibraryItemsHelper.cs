@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Library;
 
 namespace LibraryFrontEnd.Helper
 {
@@ -27,6 +28,19 @@ namespace LibraryFrontEnd.Helper
             }
 
             return type;
+        }
+        /// <summary>
+        /// Unsets the borrower values.
+        /// </summary>
+        /// <param name="libraryItem">Library items with no borrower.</param>
+        /// <returns></returns>
+        public LibraryItem UnsetBorrower(LibraryItem libraryItem)
+        {
+            libraryItem.IsBorrowable = false;
+            libraryItem.BorrowDate = null;
+            libraryItem.Borrower = null;
+
+            return libraryItem;
         }
     }
 }
