@@ -177,6 +177,7 @@ namespace LibraryFrontEnd.Controllers
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
+            
             return View();
         }
 
@@ -203,6 +204,7 @@ namespace LibraryFrontEnd.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
 
             var items = from i in _context.LibraryItem.ToList()
