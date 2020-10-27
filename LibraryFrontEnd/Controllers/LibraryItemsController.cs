@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
+using LibraryFrontEnd.Helper;
 using LibraryFrontEnd.Models;
 
 namespace LibraryFrontEnd.Controllers
@@ -188,22 +189,14 @@ namespace LibraryFrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
-                switch (libraryItem.Type)
-                {
-                    case "0":
-                        libraryItem.Type = "Book";
+                LibraryItemsHelper helper = new LibraryItemsHelper();
 
-                        break;
-                    case "1":
-                        libraryItem.Type = "ReferenceBook";
-                        libraryItem.IsBorrowable = false;
-                        break;
-                    case "2":
-                        libraryItem.Type = "DVD";
-                        break;
-                    case "3":
-                        libraryItem.Type = "AudioBook";
-                        break;
+                libraryItem.Type = helper.GetType(libraryItem.Type);
+
+
+                if (libraryItem.Type == "ReferenceBook")
+                {
+                    libraryItem.IsBorrowable = false;
                 }
 
                 _context.Add(libraryItem);
@@ -250,21 +243,15 @@ namespace LibraryFrontEnd.Controllers
 
             if (ModelState.IsValid)
             {
-                switch (libraryItem.Type)
+                LibraryItemsHelper helper = new LibraryItemsHelper();
+
+                libraryItem.Type = helper.GetType(libraryItem.Type);
+
+                if (libraryItem.Type == "ReferenceBook")
                 {
-                    case "0":
-                        libraryItem.Type = "Book";
-                        break;
-                    case "1":
-                        libraryItem.Type = "ReferenceBook";
-                        break;
-                    case "2":
-                        libraryItem.Type = "DVD";
-                        break;
-                    case "3":
-                        libraryItem.Type = "AudioBook";
-                        break;
+                    libraryItem.IsBorrowable = false;
                 }
+
                 try
                 {
                     _context.Update(libraryItem);
