@@ -69,26 +69,18 @@ namespace LibraryFrontEnd.Controllers
 
                 /*
                  Create, update and delete employees
-                • Say the employee should be a manager or even a CEO
-                • Only one CEO can be created at a time in the application database
-                • The salary should be calculated when creating the employee using the logic
-                described in the task
+    
                 • You should not be able to delete a manger or CEO that is managing another
                 employee
                 • CEO can manage managers but not employees
                 • Managers can manage other managers and employees
                 • No one can manage the CEO
-                • Validation on input fields
-                 
+            
                  */
 
                 if (ceo == 0)
                 {
                     employees.Salary = employees.Salary * salaryCeo; // calculate ceo salary
-
-                    _context.Employees.Add(employees);
-                    _context.SaveChanges();
-                    return RedirectToAction("Index");
 
                 } else if(ceo > 0)
                 {
@@ -96,6 +88,20 @@ namespace LibraryFrontEnd.Controllers
                     
                     return RedirectToAction("InformationEmployees");
                 }
+
+                if (employees.Salary < 1 || employees.Salary > 10)
+                {
+                    return RedirectToAction("InformationInput");
+                }
+                else if (employees.IsManager == true && employees.IsCEO == false)
+                {
+                    employees.Salary = employees.Salary * salaryManager;
+                }
+                else
+                {
+                    employees.Salary = employees.Salary * employeeSalary;
+                }
+                
 
                 _context.Add(employees);
                 await _context.SaveChangesAsync();
@@ -110,7 +116,12 @@ namespace LibraryFrontEnd.Controllers
 
             return View();
         }
+        public IActionResult InformationInput()
+        {
+            ViewData["Message"] = "Input an value between 1-10 for salary.";
 
+            return View();
+        }
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
