@@ -47,6 +47,13 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsCEO)
+            @{if(item.IsCEO == true)
+              {<b>CEO</b>}
+              else if (item.IsManager == true)
+              {<b>Manager</b>}
+              else
+              {<b>Employee</b>}
+            }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsManager)

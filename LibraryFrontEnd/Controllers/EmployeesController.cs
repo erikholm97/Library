@@ -26,7 +26,14 @@ namespace LibraryFrontEnd.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            var getCeo = from ceo in _context.Employees where ceo.IsCEO == true select ceo;
+
+            var getEmployee = from employee in _context.Employees where employee.IsCEO == false && employee.IsManager == false select employee;
+
+            var getManager = from manager in _context.Employees where manager.IsManager == true && manager.IsCEO == false select manager;
+
+            IEnumerable<Employees> groupedList = getCeo.Concat(getCeo).Concat(getManager).Concat(getEmployee);
+            return View(groupedList.ToList());
         }
 
         // GET: Employees/Details/5
@@ -62,7 +69,12 @@ namespace LibraryFrontEnd.Controllers
         {
             if (ModelState.IsValid)
             {
-               
+
+                if (employees.Salary < 1 || employees.Salary > 10)
+                {
+                    return RedirectToAction("InformationInput");
+                }
+
                 var ceo = _context.Employees.Count(x => x.IsCEO == true);
 
                 //Todo Kolla om Man
@@ -82,16 +94,11 @@ namespace LibraryFrontEnd.Controllers
                 {
                     employees.Salary = employees.Salary * salaryCeo; // calculate ceo salary
 
-                } else if(ceo > 0)
+                } else if(ceo > 0 && employees.IsCEO == true)
                 {
                     ViewBag.Error = "There is already an CEO in the library system.";
                     
                     return RedirectToAction("InformationEmployees");
-                }
-
-                if (employees.Salary < 1 || employees.Salary > 10)
-                {
-                    return RedirectToAction("InformationInput");
                 }
                 else if (employees.IsManager == true && employees.IsCEO == false)
                 {
