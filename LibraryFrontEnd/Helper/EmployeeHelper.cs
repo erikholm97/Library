@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Library;
 
 namespace LibraryFrontEnd.Helper
 {
@@ -36,6 +37,17 @@ namespace LibraryFrontEnd.Helper
             number = number * salaryEmployee;
 
             return number;
+        }
+        /// <summary>
+        /// Removes manager fields if user is a CEO before adding Employee to db.
+        /// </summary>
+        /// <param name="employees"></param>
+        public Employees RemoveManagerFields(Employees employees)
+        {
+            employees.ManagerId = null;
+            employees.IsManager = false;
+
+            return employees;
         }
     }
 }
