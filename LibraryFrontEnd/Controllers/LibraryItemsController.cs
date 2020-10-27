@@ -84,6 +84,61 @@ namespace LibraryFrontEnd.Controllers
 
             return View(libraryItem);
         }
+        //However, a borrowed item can be returned by the customer.When this occurs the
+        //application user can check in the item. This means the item has been returned and can
+        //once again be borrowed.The operation unsets the values in the fields Borrower and
+        //BorrowDate.
+        public async Task<IActionResult> CheckIn(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var libraryItem = await _context.LibraryItem.FindAsync(id);
+            if (libraryItem == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+
+            return View(libraryItem);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckIn(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
+        {
+            if (id != libraryItem.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    libraryItem.IsBorrowable = false;
+                    libraryItem.BorrowDate = null;
+
+                    _context.Update(libraryItem);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LibraryItemExists(libraryItem.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+            return View(libraryItem);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckOut(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)

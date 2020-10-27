@@ -115,6 +115,8 @@ namespace LibraryFrontEnd.Controllers
             }
 
             var employees = await _context.Employees.FindAsync(id);
+            employees.Salary = 0;
+
             if (employees == null)
             {
                 return NotFound();

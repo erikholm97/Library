@@ -48,7 +48,7 @@
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
-            Check Out
+            Action
         </th>
         <th></th>
     </tr>
@@ -71,6 +71,7 @@
                     }
                     catch
                     {
+                        //Displays first letter if modelItem title is one word.
                         <b>(@(item.Title[0]))</b>
                     }
 
@@ -102,9 +103,12 @@
                 @{
                     if (item.Type != "ReferenceBook" && item.IsBorrowable == true)
                     {
-                        <a asp-action="CheckOut" asp-route-id="@item.Id">CheckOut</a>
+                        <a asp-action="CheckOut" asp-route-id="@item.Id">Check Out Item</a>
                     }
-
+                    if (item.Type != "ReferenceBook" && item.IsBorrowable == true)
+                    {
+                        <a asp-action="CheckIn" asp-route-id="@item.Id">Check In Item</a>
+                    }
                 }
 
             </td>
