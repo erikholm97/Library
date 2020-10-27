@@ -35,7 +35,7 @@ namespace LibraryFrontEnd.Controllers
             var list = groupedList.ToList();
             return View(groupedList.ToList());
         }
-
+        
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -76,22 +76,29 @@ namespace LibraryFrontEnd.Controllers
                     return RedirectToAction("InformationInput");
                 }
 
-                var ceo = _context.Employees.Count(x => x.IsCEO == true);
+                bool ceoExist = await CheckIfCeoExist() ? true : false;
 
-                
-                if (ceo == 0)
+                if (ceoExist && employees.IsCEO == true)
+                {
+                    ViewBag.ErrorMessage = "There is already an CEO in the library system.";
+
+                    return View(employees);
+                }
+                else
                 {
                     employees.Salary = helper.CalculateCeoSalary(employees.Salary);
-
-                } 
-                else if(ceo > 0 && employees.IsCEO == true)
-                {
-                    ViewBag.Error = "There is already an CEO in the library system.";
-                    
-                    return RedirectToAction("InformationEmployees");
                 }
-                else if (employees.IsManager == true && employees.IsCEO == false)
+                
+                if (employees.IsManager == true && employees.IsCEO == false)
                 {
+                    //Check if manager id is null when creating an Id. 
+                    if (employees.ManagerId is null)
+                    {
+                        ViewBag.ErrorMessage = "Input manager Id when creating a manager.";
+
+                        return View(employees);
+                    }
+
                     employees.Salary = helper.CalculateManagerSalary(employees.Salary);
                 }
                 else
@@ -103,9 +110,21 @@ namespace LibraryFrontEnd.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(employees);
         }
+        private async Task<bool> CheckIfCeoExist()
+        {
+            var ceo = _context.Employees.Count(x => x.IsCEO == true);
 
+            if (ceo > 0)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
