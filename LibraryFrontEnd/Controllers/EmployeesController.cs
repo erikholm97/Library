@@ -106,18 +106,6 @@ namespace LibraryFrontEnd.Controllers
             return View(employees);
         }
 
-        public IActionResult InformationEmployees()
-        {
-            ViewData["Message"] = "There is already an CEO.";
-
-            return View();
-        }
-        public IActionResult InformationInput()
-        {
-            ViewData["Message"] = "Input an value between 1-10 for salary.";
-
-            return View();
-        }
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -148,6 +136,35 @@ namespace LibraryFrontEnd.Controllers
 
             if (ModelState.IsValid)
             {
+                EmployeeHelper helper = new EmployeeHelper();
+
+                if (employees.Salary < 1 || employees.Salary > 10)
+                {
+                    return RedirectToAction("InformationInput");
+                }
+
+                var ceo = _context.Employees.Count(x => x.IsCEO == true);
+
+
+                if (ceo == 0)
+                {
+                    employees.Salary = helper.CalculateCeoSalary(employees.Salary);
+
+                }
+                else if (ceo > 0 && employees.IsCEO == true)
+                {
+                    ViewBag.Error = "There is already an CEO in the library system.";
+
+                    return RedirectToAction("InformationEmployees");
+                }
+                else if (employees.IsManager == true && employees.IsCEO == false)
+                {
+                    employees.Salary = helper.CalculateManagerSalary(employees.Salary);
+                }
+                else
+                {
+                    employees.Salary = helper.CalculateEmployeeSalary(employees.Salary);
+                }
                 try
                 {
                     _context.Update(employees);
@@ -202,5 +219,24 @@ namespace LibraryFrontEnd.Controllers
         {
             return _context.Employees.Any(e => e.Id == id);
         }
+        #region Actions for Input validation.
+        /// <summary>
+        /// Actions to redirect the user if an wrongful value is done.
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult InformationEmployees()
+        {
+            ViewData["Message"] = "There is already an CEO.";
+
+            return View();
+        }
+        public IActionResult InformationInput()
+        {
+            ViewData["Message"] = "Input an value between 1-10 for salary.";
+
+            return View();
+        }
+
+        #endregion
     }
 }
