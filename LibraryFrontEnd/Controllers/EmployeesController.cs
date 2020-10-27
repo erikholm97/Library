@@ -86,11 +86,16 @@ namespace LibraryFrontEnd.Controllers
                 }
                 else
                 {
+                    employees.ManagerId = null;
+                    employees.IsManager = false;
+
                     employees.Salary = helper.CalculateCeoSalary(employees.Salary);
                 }
                 
                 if (employees.IsManager == true && employees.IsCEO == false)
                 {
+                    employees.Salary = helper.CalculateManagerSalary(employees.Salary);
+
                     //Check if manager id is null when creating an Id. 
                     if (employees.ManagerId is null)
                     {
@@ -98,10 +103,8 @@ namespace LibraryFrontEnd.Controllers
 
                         return View(employees);
                     }
-
-                    employees.Salary = helper.CalculateManagerSalary(employees.Salary);
                 }
-                else
+                else if(employees.IsManager == false && employees.IsCEO == false)
                 {
                     employees.Salary = helper.CalculateEmployeeSalary(employees.Salary);
                 }
