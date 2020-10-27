@@ -118,9 +118,11 @@ namespace LibraryFrontEnd.Controllers
             {
                 try
                 {
-                    libraryItem.IsBorrowable = false;
-                    libraryItem.BorrowDate = null;
-                    libraryItem.Borrower = null;
+                    LibraryItemsHelper helper = new LibraryItemsHelper();
+
+                    //Function that unsets the values in the fields Borrower and BorrowDate.
+                    libraryItem = helper.UnsetBorrower(libraryItem);
+
                     _context.Update(libraryItem);
                     await _context.SaveChangesAsync();
                 }
@@ -137,7 +139,9 @@ namespace LibraryFrontEnd.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+
             return View(libraryItem);
         }
         [HttpPost]
