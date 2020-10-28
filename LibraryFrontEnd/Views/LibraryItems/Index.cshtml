@@ -102,11 +102,11 @@
             </td>
             <td>
                 @{
-                    if (item.Type != "ReferenceBook" && item.IsBorrowable == true)
+                    if (item.Type != "ReferenceBook" && item.IsBorrowable == true && item.Borrower is null)
                     {
                         <a asp-action="CheckOut" asp-route-id="@item.Id">Check Out</a>
                     }
-                    if (item.Type != "ReferenceBook" && item.IsBorrowable == true)
+                    if (item.Type != "ReferenceBook" && item.IsBorrowable == true && item.Borrower != null)
                     {
                         <br/><a asp-action="CheckIn" asp-route-id="@item.Id">Check In</a>
                     }
