@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
+using Microsoft.AspNetCore.Http;
 
 namespace LibraryFrontEnd.Controllers
 {
@@ -22,7 +23,19 @@ namespace LibraryFrontEnd.Controllers
         // GET: ManageEmployees
         public async Task<IActionResult> Index()
         {
-            
+            //ViewData["CategoryId"] = new SelectList(_context.Employees, "Id", "Id");
+            //var item = ViewBag.Id = new SelectList(_context.Employees);
+            //Console.WriteLine(item);
+
+           
+
+            return View(await _context.Employees.ToListAsync());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(FormCollection form)
+        {
+            string strDDLValue = Request.Form["Id"].ToString();
             return View(await _context.Employees.ToListAsync());
         }
 
