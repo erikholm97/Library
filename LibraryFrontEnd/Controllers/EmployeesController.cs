@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
 using LibraryFrontEnd.Helper;
+using Microsoft.AspNetCore.Http;
 
 namespace LibraryFrontEnd.Controllers
 {
@@ -50,7 +51,43 @@ namespace LibraryFrontEnd.Controllers
 
             return View(employees);
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(IFormCollection form)
+        {
+            string getSelector = Request.Form["Id"].ToString();
+            int id = int.Parse(getSelector);
+
+            var employee = await _context.Employees.SingleOrDefaultAsync(e => e.Id == id);
+
+
+            if (employee.IsCEO == true)
+            {
+                return RedirectToAction("CEOView");
+            }
+            else if (employee.IsManager == true)
+            {
+                return RedirectToAction("ManagerView");
+            }
+
+            return View(await _context.Employees.ToListAsync());
+
+        }
+
+        public async Task<IActionResult> CEOView()
+        {
+            var selectManagers = from m in _context.Employees where m.IsManager == true select m;
+
+            return View(await selectManagers.ToListAsync());
+        }
+        public async Task<IActionResult> ManagerView()
+        {
+            var selectManagers = from m in _context.Employees where m.IsManager == false && m.IsCEO == false select m;
+
+            return View(await selectManagers.ToListAsync());
+        }
+
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {

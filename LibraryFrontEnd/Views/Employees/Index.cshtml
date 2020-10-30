@@ -4,21 +4,28 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
+<h1>Employees</h1>
 <p>
     <a asp-action="Create">Create New Employee</a>
-    <br/>
-    <a asp-controller="ManageEmployees">Manage Employees</a>
+    <br />
+    @using (Html.BeginForm())
+    {
+        <p>Select what type of user u are: </p>
+        @Html.DropDownList("Id", new SelectList(Model.AsEnumerable().Select(x => x.Id)))
+        <button type="submit">Submit</button>
+    }
 </p>
 <table class="table">
     <thead>
     <th>
         <a asp-action="Index">Reset Sorting</a>
-        <br/>
+        <br />
         <a asp-action="Index" asp-route-sortOrder="@ViewData["TypeSortParm"]">Sort by Employee</a>
     </th>
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
         </th>
@@ -43,33 +50,36 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Salary)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsCEO)
-                    @{if (item.IsCEO == true)
-                        {<b>CEO</b>}
-                        else if (item.IsManager == true)
-                        {<b>Manager</b>}
-                        else
-                        {<b>Employee</b>}
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsManager)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ManagerId)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCEO)
+                @{if (item.IsCEO == true)
+                    {<b>CEO</b>}
+                    else if (item.IsManager == true)
+                    {<b>Manager</b>}
+                    else
+                    {<b>Employee</b>}
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsManager)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManagerId)
+            </td>
+        </tr>
         }
     </tbody>
 </table>
