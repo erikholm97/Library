@@ -33,10 +33,41 @@ namespace LibraryFrontEnd.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(FormCollection form)
+        public async Task<IActionResult> Index(IFormCollection form)
         {
-            string strDDLValue = Request.Form["Id"].ToString();
+            string getSelector = Request.Form["Id"].ToString();
+            int id = int.Parse(getSelector);
+
+            var employee = await _context.Employees.SingleOrDefaultAsync(e => e.Id == id);
+
+
+            if(employee.IsCEO == true)
+            {
+                CEOView();
+            } 
+            else if(employee.IsManager == true)
+            {
+
+            }
+            else
+            {
+
+            }
+            
+
             return View(await _context.Employees.ToListAsync());
+        }
+
+        // GET: ManageEmployees
+        public async Task<IActionResult> CEOView()
+        {
+            //ViewData["CategoryId"] = new SelectList(_context.Employees, "Id", "Id");
+            //var item = ViewBag.Id = new SelectList(_context.Employees);
+            //Console.WriteLine(item);
+
+            var selectManagers = from m in _context.Employees where m.IsManager == true select m;
+
+            return View(selectManagers.ToListAsync());
         }
 
         // GET: ManageEmployees/Details/5
