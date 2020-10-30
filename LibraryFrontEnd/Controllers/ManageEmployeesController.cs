@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Library;
 using LibraryBackEnd;
 using Microsoft.AspNetCore.Http;
+using Microsoft.CodeAnalysis;
 
 namespace LibraryFrontEnd.Controllers
 {
@@ -43,33 +44,30 @@ namespace LibraryFrontEnd.Controllers
 
             if(employee.IsCEO == true)
             {
-                CEOView();
+                return RedirectToAction("CEOView");
             } 
             else if(employee.IsManager == true)
             {
-
+                return RedirectToAction("ManagerView");
             }
-            else
-            {
-
-            }
-            
 
             return View(await _context.Employees.ToListAsync());
+
         }
 
-        // GET: ManageEmployees
+        // Returns the CEO view. (Can only manage managers.)
         public async Task<IActionResult> CEOView()
         {
-            //ViewData["CategoryId"] = new SelectList(_context.Employees, "Id", "Id");
-            //var item = ViewBag.Id = new SelectList(_context.Employees);
-            //Console.WriteLine(item);
-
             var selectManagers = from m in _context.Employees where m.IsManager == true select m;
 
-            return View(selectManagers.ToListAsync());
+            return View(await selectManagers.ToListAsync());
         }
+        public async Task<IActionResult> ManagerView()
+        {
+            var selectManagers = from m in _context.Employees where m.IsManager == false && m.IsCEO == false select m;
 
+            return View(await selectManagers.ToListAsync());
+        }
         // GET: ManageEmployees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
