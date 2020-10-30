@@ -10,7 +10,7 @@
     <a asp-action="Create">Create New</a>
 </p>
 @using (Html.BeginForm()) {
-    <p>Select type of user: </p>
+    <p>Select what type of user: </p>
     @Html.DropDownList("Id", new SelectList(Model.AsEnumerable().Select(x => x.Id)))
     <button type="submit">Submit</button>                      
 }

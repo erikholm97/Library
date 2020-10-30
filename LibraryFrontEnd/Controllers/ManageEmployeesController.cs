@@ -24,12 +24,6 @@ namespace LibraryFrontEnd.Controllers
         // GET: ManageEmployees
         public async Task<IActionResult> Index()
         {
-            //ViewData["CategoryId"] = new SelectList(_context.Employees, "Id", "Id");
-            //var item = ViewBag.Id = new SelectList(_context.Employees);
-            //Console.WriteLine(item);
-
-           
-
             return View(await _context.Employees.ToListAsync());
         }
         [HttpPost]

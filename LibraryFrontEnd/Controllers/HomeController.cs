@@ -23,7 +23,7 @@ namespace LibraryFrontEnd.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Info()
         {
             return View();
         }
