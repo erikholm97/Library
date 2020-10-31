@@ -80,6 +80,7 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(4) > label").style.display = "";
             document.querySelector("#Author").style.display = "";
         } else if (document.querySelector("#Type").value == "1") {
+            document.querySelector("body > div > main > div.row > div > form > div:nth-child(6) > label").display = "none";
             document.querySelector("#RunTimeMinutes").style.display = "none";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(8) > label").style.display = "none";
             document.querySelector("#BorrowDate").style.display = "none";
@@ -93,7 +94,10 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(4) > label").style.display = "";
             document.querySelector("#Pages").style.display = "";
             document.querySelector("#Author").style.display = "";
+            document.querySelector("body > div > main > div.row > div > form > div:nth-child(6) > label").style.display = "";
+            
         } else if (document.querySelector("#Type").value == "2") {
+            document.querySelector("body > div > main > div.row > div > form > div:nth-child(5) > label").style.display = "none";
             document.querySelector("#Pages").style.display = "none";
             document.querySelector("#RunTimeMinutes").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(6) > label").style.display = "";
@@ -103,6 +107,7 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(9) > label").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(4) > label").style.display = "none";
             document.querySelector("#Author").style.display = "none";
+            document.querySelector("body > div > main > div.row > div > form > div:nth-child(5) > label").style.display = "none";
         } else if (document.querySelector("#Type").value == "3") {
             document.querySelector("#Pages").style.display = "none";
             document.querySelector("#RunTimeMinutes").style.display = "";

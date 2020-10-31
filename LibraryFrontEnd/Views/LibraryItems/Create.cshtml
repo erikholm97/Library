@@ -61,9 +61,23 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@using (Html.BeginForm())
+{
+    if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div>
+            <p>
+
+                <span style="color:red;">@ViewBag.ErrorMessage</span>
+
+            </p>
+        </div>
+    }
+    <div class="form-horizontal" />
+}
 <script type="text/javascript">
     change();
-    
+
     function change() {
         console.log(document.querySelector("#Type").value);
         if (document.querySelector("#Type").value == "0") {
@@ -119,6 +133,7 @@
             document.querySelector("#RunTimeMinutes").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(5) > label").style.display = "";
         }
-       
+
     }
 </script>
+
