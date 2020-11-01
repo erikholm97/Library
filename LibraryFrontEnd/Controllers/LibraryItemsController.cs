@@ -108,6 +108,8 @@ namespace LibraryFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckIn(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
         {
+            ModelState.Remove("Category");
+
             if (id != libraryItem.Id)
             {
                 return NotFound();
@@ -152,7 +154,11 @@ namespace LibraryFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckOut(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
         {
+<<<<<<< Updated upstream
             //When lending an item to customer the user enters the customer’s name (in this case the user can also choose what date is to be set in borrower field in the view).
+=======
+            ModelState.Remove("Category");
+>>>>>>> Stashed changes
             if (id != libraryItem.Id)
             {
                 return NotFound();
@@ -197,19 +203,30 @@ namespace LibraryFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
         {
+            ModelState.Remove("Category");
             if (ModelState.IsValid)
             {
                 LibraryItemsHelper helper = new LibraryItemsHelper();
 
                 libraryItem.Type = helper.GetType(libraryItem.Type);
 
+<<<<<<< Updated upstream
                 //Since ReferenceBook is a book you read at the library but can’t be borrowed home
+=======
+                if (libraryItem.CategoryId == null)
+                {
+                    ViewBag.ErrorMessage = "Please create an category id.";
+
+                    return View(libraryItem);
+                }
+
+>>>>>>> Stashed changes
                 if (libraryItem.Type == "ReferenceBook")
                 {
 
                     libraryItem.IsBorrowable = false;
                 }
-
+                
                 _context.Add(libraryItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -227,6 +244,7 @@ namespace LibraryFrontEnd.Controllers
         // GET: LibraryItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -248,6 +266,7 @@ namespace LibraryFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
         {
+            ModelState.Remove("Category");
             if (id != libraryItem.Id)
             {
                 return NotFound();
