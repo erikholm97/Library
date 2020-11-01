@@ -11,33 +11,43 @@ namespace LibraryFrontEnd.Helper
     /// </summary>
     public class EmployeeHelper
     {
+        
+        #region Salary Functions
+
         public decimal salaryCeo = 2.725M;
         public decimal salaryManager = 1.725M;
         public decimal salaryEmployee = 1.125M;
 
         /// <summary>
         /// Functions that calculate salary before creating the employee.
+        /// This rank is used in conjunction with the salary coefficient (The variables above) to calculate the employee’s
         /// </summary>
-        /// <param name="number"></param>
+        /// <param name="rank"></param>
         /// <returns></returns>
-        public decimal CalculateCeoSalary(decimal number)
+        public decimal CalculateCeoSalary(decimal rank)
         {
-            number = number * salaryCeo;
+            //Salary coefficient: 2.725
+            rank = rank * salaryCeo;
 
-            return number;
+            return rank;
         }
-        public decimal CalculateManagerSalary(decimal number)
+        public decimal CalculateManagerSalary(decimal rank)
         {
-            number = number * salaryManager;
+            //Salary coefficient: 1.725
+            rank = rank * salaryManager;
 
-            return number;
+            return rank;
         }
         public decimal CalculateEmployeeSalary(decimal number)
         {
+            //Salary coefficient: 1.125
             number = number * salaryEmployee;
 
             return number;
         }
+
+        #endregion
+
         /// <summary>
         /// Removes manager fields if user is a CEO before adding Employee to db.
         /// </summary>

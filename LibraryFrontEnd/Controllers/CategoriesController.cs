@@ -187,7 +187,8 @@ namespace LibraryFrontEnd.Controllers
             if (exist)
             {
                 //Item exist cannot remove
-                return RedirectToAction(nameof(Index));
+                ViewBag.ErrorMessage = "This category already exist. Create another one.";
+                return View();
             }
             else
             {

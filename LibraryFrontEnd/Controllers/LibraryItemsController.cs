@@ -29,14 +29,15 @@ namespace LibraryFrontEnd.Controllers
 
             try
             {
-                var items = from i in _context.LibraryItem.ToList() join c in _context.Category.ToList() on i.CategoryId equals c.Id
-                    select i;
+                var items = from i in _context.LibraryItem.ToList()
+                            join c in _context.Category.ToList() on i.CategoryId equals c.Id
+                            select i;
 
                 switch (sortOrder)
                 {
                     case "orderByType":
                         return View(items.OrderBy(s => s.Type).ToList());
-                        
+
                     case "orderByCategory":
                     default:
                         items = _context.LibraryItem.OrderBy(x => x.Category.CategoryName);
@@ -85,10 +86,7 @@ namespace LibraryFrontEnd.Controllers
 
             return View(libraryItem);
         }
-        //However, a borrowed item can be returned by the customer.When this occurs the
-        //application user can check in the item. This means the item has been returned and can
-        //once again be borrowed.The operation unsets the values in the fields Borrower and
-        //BorrowDate.
+        ////If user checks in item (Pressed check in in index view) the CheckIn action is again displayed since the item is now borrowable and whithout a borrower.
         public async Task<IActionResult> CheckIn(int? id)
         {
             if (id == null)
@@ -105,6 +103,7 @@ namespace LibraryFrontEnd.Controllers
 
             return View(libraryItem);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckIn(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
@@ -120,7 +119,7 @@ namespace LibraryFrontEnd.Controllers
                 {
                     LibraryItemsHelper helper = new LibraryItemsHelper();
 
-                    //Function that unsets the values in the fields Borrower and BorrowDate.
+                    //Function that unsets the values in the fields Borrower and BorrowDate. (The operation that unsets the values in the fields Borrower and BorrowDate.
                     libraryItem = helper.UnsetBorrower(libraryItem);
 
                     _context.Update(libraryItem);
@@ -144,10 +143,16 @@ namespace LibraryFrontEnd.Controllers
 
             return View(libraryItem);
         }
+        /// <summary>
+        /// CheckOut for libraryitem in which borrowable is set to true.
+        /// </summary>
+        /// <param name="id">Id of item that is to be checked out for lending</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckOut(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
         {
+            //When lending an item to customer the user enters the customer’s name (in this case the user can also choose what date is to be set in borrower field in the view).
             if (id != libraryItem.Id)
             {
                 return NotFound();
@@ -176,12 +181,12 @@ namespace LibraryFrontEnd.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
             return View(libraryItem);
         }
-       
+
         // GET: LibraryItems/Create
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
-            
+
             return View();
         }
 
@@ -198,9 +203,10 @@ namespace LibraryFrontEnd.Controllers
 
                 libraryItem.Type = helper.GetType(libraryItem.Type);
 
-
+                //Since ReferenceBook is a book you read at the library but can’t be borrowed home
                 if (libraryItem.Type == "ReferenceBook")
                 {
+
                     libraryItem.IsBorrowable = false;
                 }
 
@@ -217,7 +223,7 @@ namespace LibraryFrontEnd.Controllers
 
             return View(items);
         }
-       
+
         // GET: LibraryItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -298,9 +304,9 @@ namespace LibraryFrontEnd.Controllers
 
             return View(libraryItem);
         }
-        
+
         // POST: LibraryItems/Delete/5
-       [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

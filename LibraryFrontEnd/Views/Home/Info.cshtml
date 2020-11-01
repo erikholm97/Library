@@ -1,10 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Info";
 }
-<h1>@ViewData["Title"]</h1>
-
-<p>To use the library app. Select one of the buttons displayed in Home.</p>
-<p>In "Categories" you can manage and create categories for your LibraryItems.</p>
-<p>In "LibraryItems" you can manage and create Libraryitems</p>
-<p>In "Employees" you can se a list of Users in the Application. You can manage them by pressing "Manage Employees.</p>
-<p>In Manage Employees you select what kind of user you are (CEO, Manager, Employee). Based on what  that user has, you can manage certain kind of users. </p>
+<div class="text-left" >
+        <h3>Explination</h3>
+        <p>To use the library app. Select one of the buttons displayed in Home.</p>
+        <p>In "Categories" you can manage and create categories for your LibraryItems.</p>
+        <p>In "LibraryItems" you can manage and create Libraryitems</p>
+        <p>In "Employees" you can se a list of Users in the Application. You can manage them by pressing "Manage Employees.</p>
+        <p>In Manage Employees you select what kind of user you are (CEO, Manager, Employee). Based on what  that user has, you can manage certain kind of users. </p>
+        <h3>How to CREATE the database.</h3>
+        <p>This project uses Entity Core framework.</p>
+        <p>The database is not included with the project.</p>
+        <p>To update the database open Powershell, write the following in the root folder (urPathTotheProjects/LibraryBackEnd):</p>
+        <p>dotnet ef migrations add Final</p>
+        <p>dotnet ef database update</p>
+        <p><b>This creates the database from the classes specified in LibraryContext</b></p>
+</div>

@@ -102,10 +102,12 @@
             </td>
             <td>
                 @{
+                    //A borrowed item be borrowed by another customer if isBorrowable == true. If item.Borrower is not null the item cannot be borrowed (A borrowed item cannot be borrowed by another customer.). 
                     if (item.Type != "ReferenceBook" && item.IsBorrowable == true && item.Borrower is null)
                     {
                         <a asp-action="CheckOut" asp-route-id="@item.Id">Check Out</a>
                     }
+                    //User can checkin (borrowed item can be returned) item if borrower is not null. This action is displayed if user wants to check in a library item.
                     if (item.Type != "ReferenceBook" && item.IsBorrowable == true && item.Borrower != null)
                     {
                         <br/><a asp-action="CheckIn" asp-route-id="@item.Id">Check In</a>

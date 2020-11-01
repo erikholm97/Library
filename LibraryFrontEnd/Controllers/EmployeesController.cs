@@ -74,15 +74,17 @@ namespace LibraryFrontEnd.Controllers
             return View(await _context.Employees.ToListAsync());
 
         }
-
+        //Returns a view in which managers can be managed.
         public async Task<IActionResult> CEOView()
         {
             var selectManagers = from m in _context.Employees where m.IsManager == true select m;
 
             return View(await selectManagers.ToListAsync());
         }
+        //Returns a view in which empployees can be managed by managers but not the CEO. (Hence the query bellow that selects the managers.
         public async Task<IActionResult> ManagerView()
         {
+            //Fetches the employees in the librarydb. (querys for rows where Ismanager is false and IsCeo is false. (The employee is an regular employee).
             var selectManagers = from m in _context.Employees where m.IsManager == false && m.IsCEO == false select m;
 
             return View(await selectManagers.ToListAsync());
@@ -131,7 +133,7 @@ namespace LibraryFrontEnd.Controllers
                     return View(employees);
                 }
 
-                //If user has made an input less than 1 or higher than 10. 
+                //If user has made an input less than 1 or higher than 10. (This is because of the critera that a user is suposed to input a rank between one and 10)
                 if (employees.Salary < 1 || employees.Salary > 10)
                 {
                     ViewBag.ErrorMessage = "Input an value between 1-10 for salary.";
@@ -155,11 +157,13 @@ namespace LibraryFrontEnd.Controllers
                     //Method that removes fields from employees that is not necessary for CEO.
                     employees = helper.RemoveManagerFields(employees);
                     
+                    //Fetches CEO salary 
                     employees.Salary = helper.CalculateCeoSalary(employees.Salary);
                 }
 
                 if (employees.IsManager == true && employees.IsCEO == false)
                 {
+                    //Fetches Manager Salary.
                     employees.Salary = helper.CalculateManagerSalary(employees.Salary);
 
                     //Check if manager id is null when creating an Id. 
@@ -172,6 +176,7 @@ namespace LibraryFrontEnd.Controllers
                 }
                 else if(employees.IsManager == false && employees.IsCEO == false)
                 {
+                    //Fetches employee salary
                     employees.Salary = helper.CalculateEmployeeSalary(employees.Salary);
                 }
                 
