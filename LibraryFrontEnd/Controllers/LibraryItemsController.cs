@@ -154,11 +154,8 @@ namespace LibraryFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckOut(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
         {
-<<<<<<< Updated upstream
             //When lending an item to customer the user enters the customer’s name (in this case the user can also choose what date is to be set in borrower field in the view).
-=======
             ModelState.Remove("Category");
->>>>>>> Stashed changes
             if (id != libraryItem.Id)
             {
                 return NotFound();
@@ -210,17 +207,14 @@ namespace LibraryFrontEnd.Controllers
 
                 libraryItem.Type = helper.GetType(libraryItem.Type);
 
-<<<<<<< Updated upstream
-                //Since ReferenceBook is a book you read at the library but can’t be borrowed home
-=======
+                
                 if (libraryItem.CategoryId == null)
                 {
                     ViewBag.ErrorMessage = "Please create an category id.";
 
                     return View(libraryItem);
                 }
-
->>>>>>> Stashed changes
+                //Since ReferenceBook is a book you read at the library but can’t be borrowed home
                 if (libraryItem.Type == "ReferenceBook")
                 {
 
