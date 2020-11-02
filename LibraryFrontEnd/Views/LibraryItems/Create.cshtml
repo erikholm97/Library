@@ -129,6 +129,8 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "none";
             document.querySelector("#Author").style.display = "none";
         } else if (document.querySelector("#Type").value == "3") {
+            document.querySelector("#RunTimeMinutes").style.display = "";
+            document.querySelector("body > div > main > div.row > div > form > div:nth-child(5) > label").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "none";
             document.querySelector("#Author").style.display = "none";
             document.querySelector("#Pages").style.display = "none";
@@ -139,9 +141,7 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(8) > label").style.display = "";
             document.querySelector("#Borrower").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "none";
-            document.querySelector("#RunTimeMinutes").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(5) > label").style.display = "";
-            
         }
 
     }
