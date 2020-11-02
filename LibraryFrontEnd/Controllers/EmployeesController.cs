@@ -77,7 +77,7 @@ namespace LibraryFrontEnd.Controllers
         //Returns a view in which managers can be managed.
         public async Task<IActionResult> CEOView()
         {
-            var selectManagers = from m in _context.Employees where m.IsManager == true select m;
+            var selectManagers = from m in _context.Employees where m.IsManager == true || m.IsCEO == true select m;
 
             return View(await selectManagers.ToListAsync());
         }
@@ -85,7 +85,7 @@ namespace LibraryFrontEnd.Controllers
         public async Task<IActionResult> ManagerView()
         {
             //Fetches the employees in the librarydb. (querys for rows where Ismanager is false and IsCeo is false. (The employee is an regular employee).
-            var selectManagers = from m in _context.Employees where m.IsManager == false && m.IsCEO == false select m;
+            var selectManagers = from m in _context.Employees where m.IsManager == true && m.IsCEO == false select m;
 
             return View(await selectManagers.ToListAsync());
         }
@@ -308,6 +308,46 @@ namespace LibraryFrontEnd.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var employees = await _context.Employees.FindAsync(id);
+
+            if(employees.IsCEO == true)
+            {
+                try
+                {
+                    var checkIfManagerExist = await _context.Employees.CountAsync(x => x.IsManager == true);
+                    
+                    if(checkIfManagerExist > 0)
+                    {
+                        ViewBag.Error = "This CEO is managing an Manager. Delete them first";
+                        return View("Delete");
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                
+                
+            }
+            if (employees.IsManager == true)
+            {
+                try
+                {
+                    var checkIfManagerExist = await _context.Employees.CountAsync(x => x.IsManager == false || x.IsCEO == false);
+
+                    if (checkIfManagerExist > 0)
+                    {
+                        ViewBag.Error = "This Manager is managing an Employee. Delete them first";
+                        return View("Delete");
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+
+            }
+
             _context.Employees.Remove(employees);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

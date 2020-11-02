@@ -18,24 +18,23 @@
             @Html.DisplayFor(model => model.CategoryName)
         </dd>
     </dl>
+    @using (Html.BeginForm())
+    {
+        if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div>
+                <p>
 
+                    <span style="color:red;">@ViewBag.ErrorMessage</span>
+
+                </p>
+            </div>
+        }
+        <div class="form-horizontal" />
+    }
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>
-@using (Html.BeginForm())
-{
-    if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-    {
-        <div>
-            <p>
-
-                <span style="color:red;">@ViewBag.ErrorMessage</span>
-
-            </p>
-        </div>
-    }
-    <div class="form-horizontal" />
-}
