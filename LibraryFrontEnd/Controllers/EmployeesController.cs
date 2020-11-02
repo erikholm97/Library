@@ -323,7 +323,7 @@ namespace LibraryFrontEnd.Controllers
                         
                         ViewBag.ErrorMessage = "This CEO is managing an Manager. Delete them first";
 
-                        return RedirectToAction("Delete");
+                        return View("Delete");
                     }
                 }
                 catch(Exception ex)
