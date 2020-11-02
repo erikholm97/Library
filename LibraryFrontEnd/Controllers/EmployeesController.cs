@@ -70,6 +70,10 @@ namespace LibraryFrontEnd.Controllers
             {
                 return RedirectToAction("ManagerView");
             }
+            else
+            {
+                ViewBag.ErrorMessage = "User cannot manage others.";
+            }
 
             return View(await _context.Employees.ToListAsync());
 
