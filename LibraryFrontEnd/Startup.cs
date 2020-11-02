@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryBackEnd;
+using LibraryFrontEnd.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -56,6 +57,9 @@ namespace LibraryFrontEnd
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //Removes the settings for sortorder when restarting application. (This change need to persist in current session but not after application restart (SortOrder in appsettings is therefore reset to string.empty)
+            AppSettings.UpdateAppSettings("");
         }
     }
 }
