@@ -318,7 +318,7 @@ namespace LibraryFrontEnd.Controllers
                     if(checkIfManagerExist > 0)
                     {
                         ViewBag.Error = "This CEO is managing an Manager. Delete them first";
-                        return View("Delete");
+                        return RedirectToAction("Delete");
                     }
                 }
                 catch(Exception ex)
