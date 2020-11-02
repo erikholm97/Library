@@ -20,7 +20,7 @@ namespace LibraryFrontEnd.Controllers
         {
             _context = context;
         }
-     
+
         // GET: LibraryItems
         public async Task<IActionResult> Index(string sortOrder)
         {
@@ -33,7 +33,7 @@ namespace LibraryFrontEnd.Controllers
                             join c in _context.Category.ToList() on i.CategoryId equals c.Id
                             select i;
 
-             
+
                 if (sortOrder is null)
                 {
                     //AppSettings to persist the sortOrder in the current session.
@@ -130,13 +130,15 @@ namespace LibraryFrontEnd.Controllers
 
             if (ModelState.IsValid)
             {
+                LibraryItemsHelper helper = new LibraryItemsHelper();
+                //Function that unsets the values in the fields Borrower and BorrowDate. (The operation that unsets the values in the fields Borrower and BorrowDate.
+                libraryItem = helper.UnsetBorrower(libraryItem);
+
+                //Gets libraryItem type
+                libraryItem.Type = helper.GetType(libraryItem.Type);
+
                 try
                 {
-                    LibraryItemsHelper helper = new LibraryItemsHelper();
-
-                    //Function that unsets the values in the fields Borrower and BorrowDate. (The operation that unsets the values in the fields Borrower and BorrowDate.
-                    libraryItem = helper.UnsetBorrower(libraryItem);
-
                     _context.Update(libraryItem);
                     await _context.SaveChangesAsync();
                 }
@@ -169,6 +171,7 @@ namespace LibraryFrontEnd.Controllers
         {
             //When lending an item to customer the user enters the customer’s name (in this case the user can also choose what date is to be set in borrower field in the view).
             ModelState.Remove("Category");
+
             if (id != libraryItem.Id)
             {
                 return NotFound();
@@ -176,6 +179,9 @@ namespace LibraryFrontEnd.Controllers
 
             if (ModelState.IsValid)
             {
+                LibraryItemsHelper helper = new LibraryItemsHelper();
+                libraryItem.Type = helper.GetType(libraryItem.Type);
+
                 try
                 {
                     _context.Update(libraryItem);
@@ -220,7 +226,7 @@ namespace LibraryFrontEnd.Controllers
 
                 libraryItem.Type = helper.GetType(libraryItem.Type);
 
-                
+
                 if (libraryItem.CategoryId == null)
                 {
                     ViewBag.ErrorMessage = "Please create an category id.";
@@ -233,7 +239,7 @@ namespace LibraryFrontEnd.Controllers
 
                     libraryItem.IsBorrowable = false;
                 }
-                
+
                 _context.Add(libraryItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -251,7 +257,7 @@ namespace LibraryFrontEnd.Controllers
         // GET: LibraryItems/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            
+
             if (id == null)
             {
                 return NotFound();
