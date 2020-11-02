@@ -20,6 +20,7 @@ namespace LibraryFrontEnd.Controllers
             _context = context;
         }
 
+        #region Get Methods
         // GET: Categories
         public async Task<IActionResult> Index()
         {
@@ -50,6 +51,43 @@ namespace LibraryFrontEnd.Controllers
             return View();
         }
 
+
+        // GET: Categories/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Category
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        // GET: Categories/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Category.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+        #endregion
+
+        #region Post Methods
         // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -75,39 +113,36 @@ namespace LibraryFrontEnd.Controllers
             }
             return View(category);
         }
-        /// <summary>
-        /// Checks if categorie already exist.
-        /// </summary>
-        private async Task<bool> CheckIfCategoryExist(string name)
+
+
+        // POST: Categories/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categories = from b in await _context.Category.ToListAsync()
-                             where b.CategoryName == name
-                             select b;
 
-            if (categories.Count() > 0)
+
+            //Category is referenced in any library item it cannot be deleted until the reference is removed first.
+            bool exist = await CheckIfReferenceExistInLibraryItem(id) ? true : false;
+
+            if (exist)
             {
-                return true;
-            }
+                //Item exist cannot remove
+                ViewBag.ErrorMessage = "This used by an library item. Delete these items before removing this category.";
 
-            return false;
+                //Redirect user to view with error message.
+                return View();
+            }
+            else
+            {
+                var category = await _context.Category.FindAsync(id);
+                _context.Category.Remove(category);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
 
         }
 
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Category.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            return View(category);
-        }
 
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -155,57 +190,35 @@ namespace LibraryFrontEnd.Controllers
             return View(category);
         }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+
+
+
+        #endregion
+
+        #region Actions for validation.
+        /// <summary>
+        /// Checks if categorie already exist.
+        /// </summary>
+        private async Task<bool> CheckIfCategoryExist(string name)
         {
-            if (id == null)
+            var categories = from b in await _context.Category.ToListAsync()
+                where b.CategoryName == name
+                select b;
+
+            if (categories.Count() > 0)
             {
-                return NotFound();
+                return true;
             }
 
-            var category = await _context.Category
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
+            return false;
 
-            return View(category);
-        }
-
-        // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-
-
-            //Category is referenced in any library item it cannot be deleted until the reference is removed first.
-            bool exist = await CheckIfReferenceExistInLibraryItem(id) ? true : false;
-
-            if (exist)
-            {
-                //Item exist cannot remove
-                ViewBag.ErrorMessage = "This used by an library item. Delete these items before removing this category.";
-
-                //Redirect user to view with error message.
-                return View();
-            }
-            else
-            {
-                var category = await _context.Category.FindAsync(id);
-                _context.Category.Remove(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            
         }
 
         private async Task<bool> CheckIfReferenceExistInLibraryItem(int id)
         {
             var exist = await _context.LibraryItem.AnyAsync(item => item.Category.Id == id);
 
-            if(exist)
+            if (exist)
             {
                 return true;
             }
@@ -218,5 +231,9 @@ namespace LibraryFrontEnd.Controllers
         {
             return _context.Category.Any(e => e.Id == id);
         }
+
+
+        #endregion
+
     }
 }

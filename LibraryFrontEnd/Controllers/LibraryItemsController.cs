@@ -21,6 +21,7 @@ namespace LibraryFrontEnd.Controllers
             _context = context;
         }
 
+        #region Get Methods
         // GET: LibraryItems
         public async Task<IActionResult> Index(string sortOrder)
         {
@@ -83,6 +84,25 @@ namespace LibraryFrontEnd.Controllers
             return View(libraryItem);
         }
 
+        // GET: LibraryItems/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var libraryItem = await _context.LibraryItem
+                .Include(l => l.Category)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (libraryItem == null)
+            {
+                return NotFound();
+            }
+
+            return View(libraryItem);
+        }
+
         public async Task<IActionResult> CheckOut(int? id)
         {
             if (id == null)
@@ -117,6 +137,36 @@ namespace LibraryFrontEnd.Controllers
             return View(libraryItem);
         }
 
+        // GET: LibraryItems/Create
+        public IActionResult Create()
+        {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
+
+            return View();
+        }
+
+
+        // GET: LibraryItems/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var libraryItem = await _context.LibraryItem.FindAsync(id);
+            if (libraryItem == null)
+            {
+                return NotFound();
+            }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
+            return View(libraryItem);
+        }
+
+        #endregion
+
+        #region Post Methods
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CheckIn(int? id, [Bind("Id,CategoryId,Title,Author,Pages,RunTimeMinutes,IsBorrowable,Borrower,BorrowDate,Type")] LibraryItem libraryItem)
@@ -177,6 +227,12 @@ namespace LibraryFrontEnd.Controllers
                 return NotFound();
             }
 
+            if (libraryItem.BorrowDate is null)
+            {
+                //Sets borrowdate to datetime now if user has not selected value.
+                libraryItem.BorrowDate = DateTime.Now;
+            }
+
             if (ModelState.IsValid)
             {
                 LibraryItemsHelper helper = new LibraryItemsHelper();
@@ -202,14 +258,6 @@ namespace LibraryFrontEnd.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
             return View(libraryItem);
-        }
-
-        // GET: LibraryItems/Create
-        public IActionResult Create()
-        {
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
-
-            return View();
         }
 
         // POST: LibraryItems/Create
@@ -248,28 +296,20 @@ namespace LibraryFrontEnd.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
 
             var items = from i in _context.LibraryItem.ToList()
-                        join c in _context.Category.ToList() on i.CategoryId equals c.Id
-                        select i;
+                join c in _context.Category.ToList() on i.CategoryId equals c.Id
+                select i;
 
             return View(items);
         }
-
-        // GET: LibraryItems/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // POST: LibraryItems/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var libraryItem = await _context.LibraryItem.FindAsync(id);
-            if (libraryItem == null)
-            {
-                return NotFound();
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
-            return View(libraryItem);
+            _context.LibraryItem.Remove(libraryItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: LibraryItems/Edit/5
@@ -317,40 +357,19 @@ namespace LibraryFrontEnd.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", libraryItem.CategoryId);
             return View(libraryItem);
         }
+        #endregion
 
-        // GET: LibraryItems/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var libraryItem = await _context.LibraryItem
-                .Include(l => l.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (libraryItem == null)
-            {
-                return NotFound();
-            }
-
-            return View(libraryItem);
-        }
-
-        // POST: LibraryItems/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var libraryItem = await _context.LibraryItem.FindAsync(id);
-            _context.LibraryItem.Remove(libraryItem);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
+        #region Actions for validation.
+        /// <summary>
+        /// Method that checks if LibraryItem exist.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private bool LibraryItemExists(int id)
         {
             return _context.LibraryItem.Any(e => e.Id == id);
         }
+        #endregion
+
     }
 }

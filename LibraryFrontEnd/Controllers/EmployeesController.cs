@@ -22,6 +22,7 @@ namespace LibraryFrontEnd.Controllers
             _context = context;
         }
 
+        #region Get
         // GET: Employees
         public async Task<IActionResult> Index(string sortOrder)
         {
@@ -32,7 +33,6 @@ namespace LibraryFrontEnd.Controllers
             var getManager = from manager in _context.Employees where manager.IsManager == true && manager.IsCEO == false select manager;
 
             var getEmployee = from employee in _context.Employees where employee.IsCEO == false && employee.IsManager == false select employee;
-
 
             var employees = new List<Employees>();
 
@@ -52,6 +52,84 @@ namespace LibraryFrontEnd.Controllers
             return View(employees);
         }
 
+        //Returns a view in which managers can be managed.
+        public async Task<IActionResult> CEOView()
+        {
+            var selectManagers = from m in _context.Employees where m.IsManager == true || m.IsCEO == true select m;
+
+            return View(await selectManagers.ToListAsync());
+        }
+        //Returns a view in which empployees can be managed by managers but not the CEO. (Hence the query bellow that selects the managers.
+        public async Task<IActionResult> ManagerView()
+        {
+            //Fetches the employees in the librarydb. (querys for rows where Ismanager is false and IsCeo is false. (The employee is an regular employee).
+            var selectManagers = from m in _context.Employees where m.IsCEO == false select m;
+
+            return View(await selectManagers.ToListAsync());
+        }
+
+        // GET: Employees/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var employees = await _context.Employees
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (employees == null)
+            {
+                return NotFound();
+            }
+
+            return View(employees);
+        }
+
+        // GET: Employees/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var employees = await _context.Employees
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (employees == null)
+            {
+                return NotFound();
+            }
+
+            return View(employees);
+        }
+
+        // GET: Employees/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // GET: Employees/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var employees = await _context.Employees.FindAsync(id);
+            employees.Salary = 0;
+
+            if (employees == null)
+            {
+                return NotFound();
+            }
+            return View(employees);
+        }
+        #endregion
+
+        #region Post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(IFormCollection form)
@@ -78,46 +156,6 @@ namespace LibraryFrontEnd.Controllers
             return View(await _context.Employees.ToListAsync());
 
         }
-        //Returns a view in which managers can be managed.
-        public async Task<IActionResult> CEOView()
-        {
-            var selectManagers = from m in _context.Employees where m.IsManager == true || m.IsCEO == true select m;
-
-            return View(await selectManagers.ToListAsync());
-        }
-        //Returns a view in which empployees can be managed by managers but not the CEO. (Hence the query bellow that selects the managers.
-        public async Task<IActionResult> ManagerView()
-        {
-            //Fetches the employees in the librarydb. (querys for rows where Ismanager is false and IsCeo is false. (The employee is an regular employee).
-            var selectManagers = from m in _context.Employees where m.IsCEO == false  select m;
-
-            return View(await selectManagers.ToListAsync());
-        }
-
-        // GET: Employees/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employees = await _context.Employees
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employees == null)
-            {
-                return NotFound();
-            }
-
-            return View(employees);
-        }
-
-        // GET: Employees/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -160,7 +198,7 @@ namespace LibraryFrontEnd.Controllers
                 {
                     //Method that removes fields from employees that is not necessary for CEO.
                     employees = helper.RemoveManagerFields(employees);
-                    
+
                     //Fetches CEO salary 
                     employees.Salary = helper.CalculateCeoSalary(employees.Salary);
                 }
@@ -178,49 +216,17 @@ namespace LibraryFrontEnd.Controllers
                         return View(employees);
                     }
                 }
-                else if(employees.IsManager == false && employees.IsCEO == false)
+                else if (employees.IsManager == false && employees.IsCEO == false)
                 {
                     //Fetches employee salary
                     employees.Salary = helper.CalculateEmployeeSalary(employees.Salary);
                 }
-                
+
                 _context.Add(employees);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(employees);
-        }
-
-        
-
-        private async Task<bool> CheckIfCeoExist()
-        {
-            var ceo = _context.Employees.Count(x => x.IsCEO == true);
-
-            if (ceo > 0)
-            {
-                return true;
-            }
-
-            return false;
-
-        }
-        // GET: Employees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employees = await _context.Employees.FindAsync(id);
-            employees.Salary = 0;
-
-            if (employees == null)
-            {
-                return NotFound();
-            }
             return View(employees);
         }
 
@@ -289,25 +295,6 @@ namespace LibraryFrontEnd.Controllers
             }
             return View(employees);
         }
-
-        // GET: Employees/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employees = await _context.Employees
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (employees == null)
-            {
-                return NotFound();
-            }
-
-            return View(employees);
-        }
-
         // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -315,7 +302,7 @@ namespace LibraryFrontEnd.Controllers
         {
             var employees = await _context.Employees.FindAsync(id);
 
-            if(employees.IsCEO == true)
+            if (employees.IsCEO == true)
             {
                 try
                 {
@@ -324,18 +311,18 @@ namespace LibraryFrontEnd.Controllers
                     //Prevents a CEO that is deleting an manager or himself from doing that, if the person  is managing another employee or manager.
                     if (checkIfManagerExist > 0)
                     {
-                        
+
                         ViewBag.ErrorMessage = "This CEO is managing an Manager. Delete them first";
 
                         return View("Delete");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                 }
-                
-                
+
+
             }
             if (employees.IsManager == true)
             {
@@ -364,13 +351,42 @@ namespace LibraryFrontEnd.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #endregion
+
+        #region Tasks
+
+        /// <summary>
+        /// Function that returns if a CEO exist.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> CheckIfCeoExist()
+        {
+            var ceo = _context.Employees.Count(x => x.IsCEO == true);
+
+            if (ceo > 0)
+            {
+                return true;
+            }
+
+            return false;
+
+        }
+        /// <summary>
+        /// Function that returns if an Employee exist
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private bool EmployeesExists(int id)
         {
             return _context.Employees.Any(e => e.Id == id);
         }
-        #region Actions for Input validation.
+
+
+        #endregion
+
+        #region Actions for validation.
         /// <summary>
-        /// Actions to redirect the user if an wrongful value is done.
+        /// Actions to notify the user if an wrongful value is done.
         /// </summary>
         /// <returns></returns>
         public IActionResult InformationEmployees()
