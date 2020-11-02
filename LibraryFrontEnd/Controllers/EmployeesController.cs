@@ -55,14 +55,17 @@ namespace LibraryFrontEnd.Controllers
         //Returns a view in which managers can be managed.
         public async Task<IActionResult> CEOView()
         {
-            var selectManagers = from m in _context.Employees where m.IsManager == true || m.IsCEO == true select m;
+            //Since the task said (No one can manage the CEO) This query only returns managers. If user that is CEO wants to manage itself use this query instead:
+            //var selectManagers = from m in _context.Employees where m.IsManager == true || m.IsCEO == true select m;
+
+            var selectManagers = from m in _context.Employees where m.IsManager == true select m;
 
             return View(await selectManagers.ToListAsync());
         }
         //Returns a view in which empployees can be managed by managers but not the CEO. (Hence the query bellow that selects the managers.
         public async Task<IActionResult> ManagerView()
         {
-            //Fetches the employees in the librarydb. (querys for rows where Ismanager is false and IsCeo is false. (The employee is an regular employee).
+            //Fetches the employees in the librarydb. (querys for rows where IsCeo is false. (The employee is an regular employee or an manager) Since it was stated in that task that a manager can manage other managers and employees.
             var selectManagers = from m in _context.Employees where m.IsCEO == false select m;
 
             return View(await selectManagers.ToListAsync());
