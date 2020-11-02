@@ -178,16 +178,17 @@ namespace LibraryFrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //Todo A user should also be able to edit and delete categories. But if a
-            //category is referenced in any library item it cannot be deleted until the reference is removed
-            //first.
-            
+
+
+            //Category is referenced in any library item it cannot be deleted until the reference is removed first.
             bool exist = await CheckIfReferenceExistInLibraryItem(id) ? true : false;
 
             if (exist)
             {
                 //Item exist cannot remove
-                ViewBag.ErrorMessage = "This category already exist. Create another one.";
+                ViewBag.ErrorMessage = "This used by an library item. Delete these items before removing this category.";
+
+                //Redirect user to view with error message.
                 return View();
             }
             else
