@@ -20,15 +20,12 @@ namespace LibraryFrontEnd.Controllers
         {
             _context = context;
         }
-        /// <summary>
-        /// Variable to store the selected sort of the user.
-        /// </summary>
-        public string currentSortOrder;
+     
         // GET: LibraryItems
         public async Task<IActionResult> Index(string sortOrder)
         {
             ViewData["TypeSortParm"] = String.IsNullOrEmpty(sortOrder) ? "orderByType" : "";
-            ViewData["CategorySortParam"] = String.IsNullOrEmpty(sortOrder) ? "orderByCategory" : "";
+            ViewData["CategorySortParm"] = String.IsNullOrEmpty(sortOrder) ? "orderByCategory" : "";
 
             try
             {
@@ -36,22 +33,26 @@ namespace LibraryFrontEnd.Controllers
                             join c in _context.Category.ToList() on i.CategoryId equals c.Id
                             select i;
 
-                //If current currentSortOrder has been set (It will choose either orderByType or orderByCategory) based on what the user has choosen before if the page is reloaded.
-                if (currentSortOrder == string.Empty)
+             
+                if (sortOrder is null)
                 {
-                    sortOrder = currentSortOrder;
+                    //AppSettings to persist the sortOrder in the current session.
+                    sortOrder = AppSettings.ReadSetting();
                 }
 
                 switch (sortOrder)
                 {
                     //Can be changed to type by the user.
                     case "orderByType":
-                        currentSortOrder = "orderByType";
+                        //Stores option to persist through the application in appsettings.
+                        AppSettings.UpdateAppSettings("orderByType");
                         return View(items.OrderBy(s => s.Type).ToList());
-                    //Listing library sorted by Category Name by default.
+
+                    //Listing library sorted by Category Name by default (Hence Listing library items should be sorted by Category Name).
                     case "orderByCategory":
                     default:
-                        currentSortOrder = "orderByCategory";
+                        //Stores option to persist through the application in appsettings.
+                        AppSettings.UpdateAppSettings("orderByCategory");
                         items = _context.LibraryItem.OrderBy(x => x.Category.CategoryName);
                         return View(items);
 
