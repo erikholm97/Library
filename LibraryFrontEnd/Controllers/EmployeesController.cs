@@ -238,6 +238,8 @@ namespace LibraryFrontEnd.Controllers
 
                 if (employees.Salary < 1 || employees.Salary > 10)
                 {
+                    ViewBag.ErrorMessage = "Input an value between 1-10 for salary.";
+
                     return RedirectToAction("InformationInput");
                 }
 
@@ -251,7 +253,7 @@ namespace LibraryFrontEnd.Controllers
                 }
                 else if (ceo > 0 && employees.IsCEO == true)
                 {
-                    ViewBag.Error = "There is already an CEO in the library system.";
+                    ViewBag.ErrorMessage = "There is already an CEO in the library system.";
 
                     return RedirectToAction("InformationEmployees");
                 }
@@ -314,10 +316,13 @@ namespace LibraryFrontEnd.Controllers
                 try
                 {
                     var checkIfManagerExist = await _context.Employees.CountAsync(x => x.IsManager == true);
-                    
-                    if(checkIfManagerExist > 0)
+
+                    //Prevents a CEO that is deleting an manager or himself from doing that, if the person  is managing another employee or manager.
+                    if (checkIfManagerExist > 0)
                     {
-                        ViewBag.Error = "This CEO is managing an Manager. Delete them first";
+                        
+                        ViewBag.ErrorMessage = "This CEO is managing an Manager. Delete them first";
+
                         return RedirectToAction("Delete");
                     }
                 }
@@ -332,11 +337,13 @@ namespace LibraryFrontEnd.Controllers
             {
                 try
                 {
-                    var checkIfManagerExist = await _context.Employees.CountAsync(x => x.IsManager == false || x.IsCEO == false);
+                    var checkIfManagerExist = await _context.Employees.CountAsync(x => x.IsManager == false && x.IsCEO == false);
 
+                    //Prevents a Manager that is deleting an employee or himself from doing that, if the person  is another employee.
                     if (checkIfManagerExist > 0)
                     {
-                        ViewBag.Error = "This Manager is managing an Employee. Delete them first";
+                        ViewBag.ErrorMessage = "This Manager is managing an Employee. Delete them first";
+
                         return View("Delete");
                     }
                 }
