@@ -89,7 +89,7 @@ namespace LibraryFrontEnd.Controllers
         public async Task<IActionResult> ManagerView()
         {
             //Fetches the employees in the librarydb. (querys for rows where Ismanager is false and IsCeo is false. (The employee is an regular employee).
-            var selectManagers = from m in _context.Employees where m.IsManager == true && m.IsCEO == false select m;
+            var selectManagers = from m in _context.Employees where m.IsCEO == false  select m;
 
             return View(await selectManagers.ToListAsync());
         }
