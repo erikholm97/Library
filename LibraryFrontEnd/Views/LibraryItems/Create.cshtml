@@ -81,6 +81,7 @@
     function change() {
         console.log(document.querySelector("#Type").value);
         if (document.querySelector("#Type").value == "0") {
+            document.querySelector("body > div > main > div.row > div > form > div.form-group.form-check > label").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "";
             document.querySelector("#Author").style.display = "";
             document.querySelector("#RunTimeMinutes").style.display = "none";
@@ -96,6 +97,7 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(4) > label").style.display = "";
             document.querySelector("#Author").style.display = "";
         } else if (document.querySelector("#Type").value == "1") {
+            document.querySelector("body > div > main > div.row > div > form > div.form-group.form-check > label").style.display = "none";
              document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "";
             document.querySelector("#Author").style.display = "";
             document.querySelector("#RunTimeMinutes").style.display = "none";
@@ -115,6 +117,7 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(4) > label").style.display = "";
             document.querySelector("#Author").style.display = "";
         } else if (document.querySelector("#Type").value == "2") {
+            document.querySelector("body > div > main > div.row > div > form > div.form-group.form-check > label").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "none";
             document.querySelector("#Author").style.display = "none";
             document.querySelector("#Pages").style.display = "none";
@@ -129,6 +132,7 @@
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "none";
             document.querySelector("#Author").style.display = "none";
         } else if (document.querySelector("#Type").value == "3") {
+            document.querySelector("body > div > main > div.row > div > form > div.form-group.form-check > label").style.display = "";
             document.querySelector("#RunTimeMinutes").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(5) > label").style.display = "";
             document.querySelector("body > div > main > div.row > div > form > div:nth-child(3) > label").style.display = "none";
