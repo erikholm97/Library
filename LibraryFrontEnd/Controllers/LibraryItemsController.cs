@@ -20,7 +20,10 @@ namespace LibraryFrontEnd.Controllers
         {
             _context = context;
         }
-
+        /// <summary>
+        /// Variable to store the selected sort of the user.
+        /// </summary>
+        public string currentSortOrder;
         // GET: LibraryItems
         public async Task<IActionResult> Index(string sortOrder)
         {
@@ -33,13 +36,22 @@ namespace LibraryFrontEnd.Controllers
                             join c in _context.Category.ToList() on i.CategoryId equals c.Id
                             select i;
 
+                //If current currentSortOrder has been set (It will choose either orderByType or orderByCategory) based on what the user has choosen before if the page is reloaded.
+                if (currentSortOrder == string.Empty)
+                {
+                    sortOrder = currentSortOrder;
+                }
+
                 switch (sortOrder)
                 {
+                    //Can be changed to type by the user.
                     case "orderByType":
+                        currentSortOrder = "orderByType";
                         return View(items.OrderBy(s => s.Type).ToList());
-
+                    //Listing library sorted by Category Name by default.
                     case "orderByCategory":
                     default:
+                        currentSortOrder = "orderByCategory";
                         items = _context.LibraryItem.OrderBy(x => x.Category.CategoryName);
                         return View(items);
 
