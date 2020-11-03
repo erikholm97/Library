@@ -2,7 +2,7 @@
 A library application in which you can create, edit and lend library items. You can also manage employees. Made in ASP.NET Core and as a part of a coding challenge. 
 
 
-Commands in ../LibraryBackEnd for generating model
+Commands in ../LibraryBackEnd for generating DB
 
 dotnet tool install --global dotnet-ef
 
